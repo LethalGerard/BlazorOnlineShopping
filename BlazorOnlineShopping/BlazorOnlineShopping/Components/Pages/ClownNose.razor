@@ -1,0 +1,38 @@
+﻿@page "/clownnose"
+@using BlazorOnlineShopping.CollectionData
+@inject ShoppingCart ShoppingCart
+@inject ProductInventory ProductInventory
+
+<h3>Clown Nose</h3>
+
+<NavLink href="/" class="nav-link">Home</NavLink>
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
+
+@if (clownNose != null)
+{
+    <p>Pris: @clownNose.Price kr</p>
+    <p>@clownNose.Description</p>
+    <img src="@clownNose.ImageUrl" alt="Clown Wig" style="width:600px; height:auto;" />
+    <button @onclick="() => AddToCart(clownNose)">Lägg i varukorg</button>
+}
+else
+{
+    <p>Produkten hittades inte.</p>
+}
+
+@code {
+    private Product? clownNose;
+
+    protected override void OnInitialized()
+    {
+        clownNose = ProductInventory.Products.FirstOrDefault(p => p.Name == "Clown Nose");
+    }
+
+    public void AddToCart(Product product)
+    {
+        if (product != null)
+        {
+            ShoppingCart.AddToCart(product);
+        }
+    }
+}

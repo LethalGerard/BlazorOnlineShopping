@@ -1,0 +1,42 @@
+﻿@page "/cart"
+@using BlazorOnlineShopping.CollectionData
+@using Blazored.LocalStorage
+@inject ShoppingCart ShoppingCart
+@inject ILocalStorageService LocalStorage
+
+<h3>CustomerCart</h3>
+
+<NavLink href="/" class="nav-link">Home</NavLink>
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
+
+@if (ShoppingCart.Cart.Any())
+{
+@foreach (var product in ShoppingCart.Cart)
+{
+    <div style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
+            <h2>@product.Name</h2>
+            <p>Pris: @product.Price kr</p>
+            <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
+    </div>
+}
+    
+}
+else
+{
+    <p>Inga produkter i korgen.</p>
+}
+
+@code{
+    public async Task SaveCartAsync()
+    {
+        await LocalStorage.SetItemAsync("shoppingCart", ShoppingCart.Cart);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+        await ShoppingCart.LoadCartAsync(LocalStorage);            
+        }
+    }
+}

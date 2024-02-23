@@ -1,0 +1,29 @@
+﻿@page "/clownwig"
+@using BlazorOnlineShopping.CollectionData
+@inject ShoppingCart ShoppingCart
+@inject ProductInventory ProductInventory
+
+<h3>ClownWig</h3>
+
+<NavLink href="/" class="nav-link">Home</NavLink>
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
+
+@if (clownWig != null)
+{    
+    <p>Pris: @clownWig.Price kr</p>
+    <p>@clownWig.Description</p>
+    <img src="@clownWig.ImageUrl" alt="Clown Wig" style="width:600px; height:auto;" />
+}
+else
+{
+    <p>Produkten hittades inte.</p>
+}
+
+@code {
+    private Product? clownWig;
+
+    protected override void OnInitialized()
+    {
+        clownWig = ProductInventory.Products.FirstOrDefault(p => p.Name == "Clown Wig");
+    }
+}

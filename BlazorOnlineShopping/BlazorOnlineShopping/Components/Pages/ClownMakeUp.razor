@@ -1,0 +1,59 @@
+﻿@page "/clownmakeup"
+@using BlazorOnlineShopping.CollectionData
+@inject ShoppingCart ShoppingCart
+@inject ProductInventory ProductInventory
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
+
+<h3>Clown Makeup</h3>
+
+<NavLink href="/" class="nav-link">Home</NavLink>
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
+
+@if (clownMakeUp != null)
+{
+    <p>Pris: @clownMakeUp.Price kr</p>
+    <p>@clownMakeUp.Description</p>
+    <img src="@clownMakeUp.ImageUrl" alt="Clown MakeUp" style="width:600px; height:auto;" />
+    <button @onclick="() => AddToCart(clownMakeUp)">Lägg i varukorg</button>
+}
+else
+{
+    <p>Produkten hittades inte.</p>
+}
+
+@foreach (var product in ShoppingCart.Cart)
+{
+    //<a href="@product.Route" style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
+        <button>
+            <h2>@product.Name</h2>
+            <p>Pris: @product.Price kr</p>
+            <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
+        </button>
+    //</a>
+}
+
+@code {
+    public Product? clownMakeUp;
+
+    protected override void OnInitialized()
+    {
+        clownMakeUp = ProductInventory.Products.FirstOrDefault(p => p.Name == "Clown MakeUp");
+    }
+
+    public void AddToCart(Product product)
+    {
+        if (product != null)
+        {
+            ShoppingCart.AddToCart(product);            
+        }            
+    }
+    public void NavigateToProductDetails(Product product)
+    {
+        if (product != null)
+        {
+        NavigationManager.NavigateTo($"/productdetails/{product.ProductId}");            
+        }
+    }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOnlineShopping", "BlazorOnlineShopping\BlazorOnlineShopping\BlazorOnlineShopping.csproj", "{A99142B0-BEFA-4BD1-A3AE-42AB07DE3E08}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOnlineShopping.Client", "BlazorOnlineShopping\BlazorOnlineShopping.Client\BlazorOnlineShopping.Client.csproj", "{6761C99B-006C-4715-9A00-92923D8EC16F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A99142B0-BEFA-4BD1-A3AE-42AB07DE3E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99142B0-BEFA-4BD1-A3AE-42AB07DE3E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99142B0-BEFA-4BD1-A3AE-42AB07DE3E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99142B0-BEFA-4BD1-A3AE-42AB07DE3E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6761C99B-006C-4715-9A00-92923D8EC16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6761C99B-006C-4715-9A00-92923D8EC16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6761C99B-006C-4715-9A00-92923D8EC16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6761C99B-006C-4715-9A00-92923D8EC16F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {023BE4C8-A728-40D4-AC82-BB58FF724F68}
+	EndGlobalSection
+EndGlobal

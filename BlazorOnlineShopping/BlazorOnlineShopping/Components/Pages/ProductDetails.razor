@@ -1,0 +1,29 @@
+﻿@page "/productdetails/{ProductId}"
+@using BlazorOnlineShopping.CollectionData
+@inject ProductInventory ProductInventory
+
+
+@code 
+{        
+        [Parameter]
+        public int ProductId { get; set; }
+
+        public Product product;
+
+    protected override async Task OnInitializedAsync()
+        {
+            product = ProductInventory.Products.FirstOrDefault(p => p.ProductId == ProductId);
+        }
+}
+
+@if (product != null)
+{
+    <h2>@product.Name</h2>
+    <img src="@product.ImageUrl" alt="Produktbild" />
+    <p>Pris: @product.Price kr</p>
+    <p>@product.Description</p>
+}
+else
+{
+    <p>Produkten hittades inte.</p>
+}
