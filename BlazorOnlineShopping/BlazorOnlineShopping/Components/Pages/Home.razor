@@ -2,7 +2,7 @@
 @using BlazorOnlineShopping.CollectionData
 @inject ProductInventory ProductInventory
 @inject NavigationManager NavigationManager
-
+@rendermode InteractiveServer
 
 <h1>Clownprodukter</h1>
 
@@ -12,13 +12,15 @@
 <div style="display: flex; flex-wrap: wrap;">
     @foreach (var product in ProductInventory.Products)
     {
-        //<a href="@product.Route" style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
+        <ClownCard Product="@product"></ClownCard>
+
+        /*<a href="@product.Route" style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
         <button @onclick="() => NavigateToProductDetails(product)">
             <h2>@product.Name</h2>
             <p strong>Pris: @product.Price kr</p>
-                <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
+            <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
         </button>
-        //</a>
+        </a>*/
     }
 </div>
 
@@ -30,5 +32,7 @@
                 NavigationManager.NavigateTo($"/productdetails/{product.ProductId}");
             }
         }
+
+        public List<Product> products = new List<Product>();
 }
 

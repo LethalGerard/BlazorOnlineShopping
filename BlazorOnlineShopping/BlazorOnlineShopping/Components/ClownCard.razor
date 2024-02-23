@@ -1,0 +1,32 @@
+﻿@using BlazorOnlineShopping.CollectionData
+@inject ShoppingCart ShoppingCart
+@inject ProductInventory ProductInventory
+@inject NavigationManager NavigationManager
+
+<div style="flex: 1 0 50%; max-width: 20%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
+    <a href=@($"/productdetails/{product.ProductId}")>
+        <h4>@product.Name</h4>
+        <p>@product.Price kr</p>
+        <p>
+            <img src="@product.ImageUrl" style="flex: 1 0 50%; width:90%; height:auto;" />
+        </p>
+    </a>
+    <button @onclick="() => AddToCart(product)">Lägg i varukorg</button>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public Product? product { get; set; }
+
+    public void AddToCart(Product product)
+    {
+        if (product != null)
+        {
+            ShoppingCart.AddToCart(product);
+        }       
+    }
+
+}
+

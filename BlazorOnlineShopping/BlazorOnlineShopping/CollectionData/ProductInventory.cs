@@ -30,4 +30,6 @@ public class ProductInventory
     {
         return _products[i-1];
     }
+
+    public List<Product> GetProducts(int i) { return _products; }
 }

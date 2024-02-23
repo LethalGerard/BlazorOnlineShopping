@@ -1,7 +1,21 @@
-﻿@page "/productdetails/{ProductId}"
+﻿@page "/productdetails/{ProductId:int}"
 @using BlazorOnlineShopping.CollectionData
 @inject ProductInventory ProductInventory
+@inject ShoppingCart ShoppingCart
+@rendermode InteractiveServer
 
+@if (product != null)
+{
+    <h2>@product.Name</h2>
+    <img src="@product.ImageUrl" alt="Produktbild" />
+    <p>Pris: @product.Price kr</p>
+    <p>@product.Description</p>
+    <button @onclick="() => AddToCart(product)">Lägg i varukorg</button>
+}
+else
+{
+    <p>Produkten hittades inte.</p>
+}
 
 @code 
 {        
@@ -14,16 +28,12 @@
         {
             product = ProductInventory.Products.FirstOrDefault(p => p.ProductId == ProductId);
         }
-}
 
-@if (product != null)
-{
-    <h2>@product.Name</h2>
-    <img src="@product.ImageUrl" alt="Produktbild" />
-    <p>Pris: @product.Price kr</p>
-    <p>@product.Description</p>
-}
-else
-{
-    <p>Produkten hittades inte.</p>
+    public void AddToCart(Product product)
+    {
+        if (product != null)
+        {
+            ShoppingCart.AddToCart(product);
+        }
+    }
 }
