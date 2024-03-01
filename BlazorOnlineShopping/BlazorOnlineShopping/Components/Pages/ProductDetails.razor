@@ -1,8 +1,12 @@
 ﻿@page "/productdetails/{ProductId:int}"
 @using BlazorOnlineShopping.CollectionData
+@inject ILocalStorageService localStorage
 @inject ProductInventory ProductInventory
 @inject ShoppingCart ShoppingCart
 @rendermode InteractiveServer
+
+<NavLink href="/" class="nav-link">Home</NavLink>
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
 
 @if (product != null)
 {
@@ -18,22 +22,33 @@ else
 }
 
 @code 
-{        
-        [Parameter]
-        public int ProductId { get; set; }
+{
+    [Parameter]
+    public int ProductId { get; set; }
 
-        public Product product;
+    public Product product;
 
     protected override async Task OnInitializedAsync()
-        {
-            product = ProductInventory.Products.FirstOrDefault(p => p.ProductId == ProductId);
-        }
-
-    public void AddToCart(Product product)
     {
-        if (product != null)
+        product = ProductInventory.Products.FirstOrDefault(p => p.ProductId == ProductId);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
         {
-            ShoppingCart.AddToCart(product);
+            var cartList = await localStorage.GetItemAsync<List<Product>>("ShoppingCart");
+            if (cartList is not null)
+            {
+
+            }
+
         }
+    }
+
+    public async Task AddToCart(Product product)
+    {          
+        ShoppingCart.AddToCart(product);
+        await localStorage.SetItemAsync("ShoppingCart", ShoppingCart.Cart);
     }
 }

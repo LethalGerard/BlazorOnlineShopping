@@ -1,42 +1,57 @@
 ﻿@page "/cart"
+@using Microsoft.AspNetCore.Components.Forms
 @using BlazorOnlineShopping.CollectionData
 @using Blazored.LocalStorage
 @inject ShoppingCart ShoppingCart
-@inject ILocalStorageService LocalStorage
+@inject ILocalStorageService localStorage
+
+@rendermode InteractiveServer
 
 <h3>CustomerCart</h3>
 
 <NavLink href="/" class="nav-link">Home</NavLink>
 <NavLink href="/cart" class="nav-link">Varukorg</NavLink>
 
-@if (ShoppingCart.Cart.Any())
+    <div style="display: flex; flex-wrap: wrap;">
+@if (cartItems.Any())
 {
-@foreach (var product in ShoppingCart.Cart)
+@foreach (var product in cartItems)
 {
-    <div style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
-            <h2>@product.Name</h2>
-            <p>Pris: @product.Price kr</p>
-            <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
+    <div style="flex: 1 0 50%; max-width: 20%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
+        <h2>@product.Name</h2>
+        <p>Pris: @product.Price kr</p>
+        <img src="@product.ImageUrl" alt="@product.Name" style="width:100px; height:auto;" />
     </div>
-}
+    }               
     
 }
 else
 {
     <p>Inga produkter i korgen.</p>
 }
+    </div>
+
+    <div>Slutför beställning</div>
+        För & Efternamn <input type="text" id="name"    @bind="name"/>
+        Adress          <input type="text" id="address" @bind="address"/>
+        E-mail          <input type="text" id="email"   @bind="email"/>
+        MobilNr         <input type="text" id="phone"   @bind="phone"/>
 
 @code{
-    public async Task SaveCartAsync()
-    {
-        await LocalStorage.SetItemAsync("shoppingCart", ShoppingCart.Cart);
-    }
+    public List<Product> cartItems = new List<Product>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-        await ShoppingCart.LoadCartAsync(LocalStorage);            
+            cartItems = await localStorage.GetItemAsync<List<Product>>("ShoppingCart") ?? new List<Product>();
+            StateHasChanged(); // Markera för omrendering om det behövs
         }
     }
+
+    public string name      = string.Empty;
+    public string address   = string.Empty;
+    public string email     = string.Empty;
+    public string phone     = string.Empty;
+
 }

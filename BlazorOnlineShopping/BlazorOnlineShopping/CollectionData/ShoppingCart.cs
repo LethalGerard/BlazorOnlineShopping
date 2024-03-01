@@ -1,26 +1,30 @@
 ﻿using Blazored.LocalStorage;
-using Microsoft.JSInterop;
-
-
 namespace BlazorOnlineShopping.CollectionData;
 
 public class ShoppingCart
 {
     public List<Product> _cart = new List<Product>();
     public List<Product> Cart => _cart;
+    public ILocalStorageService localStorage;
 
-    public void AddToCart(Product product)
+    public ShoppingCart(ILocalStorageService localStorageService) 
     {
-        _cart.Add(product);                
+        localStorage = localStorageService; 
     }
 
-    public async Task SaveCartAsync(ILocalStorageService LocalStorage)
-    {
-        await LocalStorage.SetItemAsync("shoppingCart", _cart);
+    public async Task AddToCart(Product product)
+    {        
+        _cart.Add(product);
+        SaveCartAsync();
     }
 
-    public async Task LoadCartAsync(ILocalStorageService LocalStorage)
+    public async Task SaveCartAsync()
     {
-        _cart = await LocalStorage.GetItemAsync<List<Product>>("shoppingCart") ?? new List<Product>();
+        await localStorage.SetItemAsync<List<Product>>("shoppingCart", _cart);
+    }
+
+    public async Task LoadCartAsync()
+    {
+        _cart = await localStorage.GetItemAsync<List<Product>>("shoppingCart") ?? new List<Product>();
     }
 }

@@ -2,6 +2,9 @@
 @inject ShoppingCart ShoppingCart
 @inject ProductInventory ProductInventory
 @inject NavigationManager NavigationManager
+@inject ILocalStorageService localStorage
+@rendermode InteractiveServer
+
 
 <div style="flex: 1 0 50%; max-width: 20%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
     <a href=@($"/productdetails/{product.ProductId}")>
@@ -20,13 +23,10 @@
     [Parameter]
     public Product? product { get; set; }
 
-    public void AddToCart(Product product)
+    public async Task AddToCart(Product product)
     {
-        if (product != null)
-        {
-            ShoppingCart.AddToCart(product);
-        }       
+        ShoppingCart.AddToCart(product);
+        await localStorage.SetItemAsync("ShoppingCart", ShoppingCart.Cart);
     }
-
 }
 

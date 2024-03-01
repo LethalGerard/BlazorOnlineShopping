@@ -8,6 +8,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<ProductInventory>();
 builder.Services.AddScoped<ShoppingCart>();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddBlazoredLocalStorage();
+
 
  //Add services to the container.
 builder.Services.AddRazorComponents()
