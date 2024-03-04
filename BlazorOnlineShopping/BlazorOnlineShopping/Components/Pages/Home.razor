@@ -14,14 +14,6 @@
     @foreach (var product in ProductInventory.Products)
     {
         <ClownCard Product="@product"></ClownCard>
-        /*<button @onclick="() => AddToCart(product)">Lägg i varukorg</button>*/
-        /*<a href="@product.Route" style="flex: 1 0 50%; max-width: 30%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
-        <button @onclick="() => NavigateToProductDetails(product)">
-            <h2>@product.Name</h2>
-            <p strong>Pris: @product.Price kr</p>
-            <img src="@product.ImageUrl" alt="@product.Name" style="width:200px; height:auto;" />
-        </button>
-        </a>*/
     }
 </div>
 
@@ -41,4 +33,3 @@
                 
     }
 }
-

@@ -9,6 +9,7 @@ builder.Services.AddSingleton<ProductInventory>();
 builder.Services.AddScoped<ShoppingCart>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSingleton<CustomerInfo>();
 
 
  //Add services to the container.

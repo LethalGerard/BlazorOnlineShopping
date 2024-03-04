@@ -1,57 +1,104 @@
-﻿@page "/cart"
-@using Microsoft.AspNetCore.Components.Forms
-@using BlazorOnlineShopping.CollectionData
-@using Blazored.LocalStorage
-@inject ShoppingCart ShoppingCart
-@inject ILocalStorageService localStorage
+﻿@page "/cart" 
+@using Microsoft.AspNetCore.Components.Forms 
+@using BlazorOnlineShopping.CollectionData 
+@using Blazored.LocalStorage 
+@inject ShoppingCart ShoppingCart 
+@inject ILocalStorageService localStorage 
+@rendermode InteractiveServer 
 
-@rendermode InteractiveServer
+<h3>Kundvagn</h3> 
+<NavLink href="/" class="nav-link">Hem</NavLink> 
+<NavLink href="/cart" class="nav-link">Varukorg</NavLink> 
 
-<h3>CustomerCart</h3>
+<div style="display: flex; flex-wrap: wrap;">     
+    @if (cartItems.Any())     
+   {    @foreach (var product in cartItems)         
+            {   
+                <div style="flex: 1 0 50%; max-width: 20%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">         
+                <h2>@product.Name</h2> 
+                <p>Pris: @product.Price kr</p>                 
+                <img src="@product.ImageUrl" alt="@product.Name" style="width:100px; height:auto;" />             
+                </div>         
+            }     
+       <div style="margin-top: 20px;">     
+           <h3>Slutför beställning</h3>     
+           <form style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; max-width: 500px;">         
+               <label for="name" style="justify-self: end; align-self: center;">För & Efternamn:</label>         
+               <input type="text" id="name" @bind="name" style="width: 100%; padding: 8px;" />         
+               <label for="address" style="justify-self: end; align-self: center;">Adress:</label>         
+               <input type="text" id="address" @bind="address" style="width: 100%; padding: 8px;" />         
+               <label for="email" style="justify-self: end; align-self: center;">E-mail:</label>         
+               <input type="text" id="email" @bind="email" style="width: 100%; padding: 8px;" />         
+               <label for="phone" style="justify-self: end; align-self: center;">MobilNr:</label>         
+               <input type="text" id="phone" @bind="phone" style="width: 100%; padding: 8px;" />         
+               <div></div>
+                <button type="button" @onclick="PlaceOrder" style="padding: 8px; cursor: pointer;" disabled="@(!IsFormValid())">
+                    Placera beställning
+                </button>     
+           </form>
+       </div>
+   }     
+       else     
+       {         
+           <p>Inga produkter i korgen.</p>     
+       } 
+       </div> 
+           
+          
+           @if (orderMessage != null) 
+           {
+               <div>
+                    <p style="color: green; margin-top: 20px;">@orderMessage</p>  
+                    
+                    <h3>Din Beställing:</h3>
 
-<NavLink href="/" class="nav-link">Home</NavLink>
-<NavLink href="/cart" class="nav-link">Varukorg</NavLink>
+                    @foreach (var product in orderedItems)
+                        {
+                            <h4>@product.Name</h4>
+                            <img src="@product.ImageUrl" alt="@product.Name" style="width:50px; height:auto;" />
+                        }
 
-    <div style="display: flex; flex-wrap: wrap;">
-@if (cartItems.Any())
-{
-@foreach (var product in cartItems)
-{
-    <div style="flex: 1 0 50%; max-width: 20%; padding: 10px; border: 2px solid black; margin: 10px; border-radius: 10px;">
-        <h2>@product.Name</h2>
-        <p>Pris: @product.Price kr</p>
-        <img src="@product.ImageUrl" alt="@product.Name" style="width:100px; height:auto;" />
-    </div>
-    }               
-    
-}
-else
-{
-    <p>Inga produkter i korgen.</p>
-}
-    </div>
+                        <h4>Levereras till:</h4>
+                        <p>@name</p>
+                        <p>@address</p>                        
+               </div>
+           }        
 
-    <div>Slutför beställning</div>
-        För & Efternamn <input type="text" id="name"    @bind="name"/>
-        Adress          <input type="text" id="address" @bind="address"/>
-        E-mail          <input type="text" id="email"   @bind="email"/>
-        MobilNr         <input type="text" id="phone"   @bind="phone"/>
+@code {
+    public List<Product> orderedItems = new List<Product>();
 
-@code{
-    public List<Product> cartItems = new List<Product>();
+    public List<Product> cartItems = new List<Product>();     
+    public string name = string.Empty;     
+    public string address = string.Empty;     
+    public string email = string.Empty;     
+    public string phone = string.Empty;     
+    public string orderMessage = null;     
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
+    protected override async Task OnAfterRenderAsync(bool firstRender)     
+    {         
+        if (firstRender)         
+        { 
             cartItems = await localStorage.GetItemAsync<List<Product>>("ShoppingCart") ?? new List<Product>();
-            StateHasChanged(); // Markera för omrendering om det behövs
-        }
+            StateHasChanged(); 
+        }     
     }
 
-    public string name      = string.Empty;
-    public string address   = string.Empty;
-    public string email     = string.Empty;
-    public string phone     = string.Empty;
+    private bool IsFormValid()
+    {
+        return  !string.IsNullOrWhiteSpace(name) &&
+                !string.IsNullOrWhiteSpace(address) &&
+                !string.IsNullOrWhiteSpace(email) &&
+                !string.IsNullOrWhiteSpace(phone);
+    }
 
-}
+    private async Task PlaceOrder()     
+        {
+            await localStorage.SetItemAsync("ShoppingCart", cartItems);
+
+            orderedItems = new List<Product>(cartItems);
+            await localStorage.RemoveItemAsync("ShoppingCart");
+            cartItems.Clear();
+
+            orderMessage = "Tack för din beställning!";
+        }
+   }
